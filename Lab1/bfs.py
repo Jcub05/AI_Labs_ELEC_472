@@ -1,48 +1,73 @@
 from collections import deque
+import matplotlib.pyplot as plt
 
 
-def bfs(source, target, start_node, target_node):
+def graph(source, target, weights=[], names={}):
     """
-    Breadth First Search (BFS).
+    Creates and display a graph.
     
-    Args:
-        source (list): List of source nodes for edges.
-        target (list): List of target nodes for edges.
-        start_node (int): The starting node for BFS.
-        target_node (int): The node to be searched for.
+    Parameters:
+        source (list): List of source nodes.
+        target (list): List of target nodes.
+        weights (list): List of edge weights corresponding to source-target pairs.
+        names (dict): Dictionary mapping node identifiers to names for labeling.
     
     Returns:
-        list: A list representing the path of visited nodes, or -1 if target is not found.
+        None
     """
-    # Initialize visited set, queue, and node_list
-    node_list = []
-    visited = set()
-    queue = deque()
+    # Get unique nodes
+    nodes = []
+    for s, t in zip(source, target):
+        if s not in nodes:
+            nodes.append(s)
+        if t not in nodes:
+            nodes.append(t)
     
-    # Add starting node to visited set and queue
-    visited.add(start_node)
-    queue.append(start_node)
+    # If weights are not provided add None
+    if len(weights) == 0:
+        weights = [None for _ in range(max(len(source), len(target)))]
     
-    while queue:
-        # Dequeue the first node
-        current_node = queue.popleft()
-        
-        # Add current node to the visited list
-        node_list.append(current_node)
-        
-        # If target node is found, return the node list
-        if current_node == target_node:
-            return node_list
-        
-        # Get all children of the current node
-        children = [target[i] for i in range(len(source)) if source[i] == current_node]
-        
-        # Add unvisited children to the queue
-        for child in children:
-            if child not in visited:
-                visited.add(child)
-                queue.append(child)
+    # Create a mapping for node levels
+    levels = {}
+    for s, t in zip(source, target):
+        if s not in levels:
+            levels[s] = 0
+        levels[t] = levels[s] + 1
     
-    # If target node is not found, return -1
-    print("Target not found!")
-    return -1
+    positions = {}
+    max_width = max(levels.values()) + 1
+    level_counts = [0] * max_width
+    
+    # for node in sorted(nodes, key=lambda n: levels.get(n, 0)):
+    for node in nodes:
+        level = levels.get(node, 0)
+        x = (level_counts[level] + 0.5) / (sum(level_counts) + 1 if sum(level_counts) > 0 else 1)
+        y = -level
+        positions[node] = (x, y)
+        level_counts[level] += 1
+    
+    print(positions)
+    
+    # Adjust root node to be at the center
+    for node, level in levels.items():
+        if level == 0:
+            positions[node] = (0.5, 0)
+    
+    # Draw nodes
+    plt.figure(figsize=(8, 8))
+    for node, (x, y) in positions.items():
+        plt.scatter(x, y, s=700, color='skyblue', zorder=2)
+        plt.text(x, y, names.get(node, node), fontsize=12, ha='center', va='center', zorder=3)
+    
+    # Draw edges with weights
+    for s, t, w in zip(source, target, weights):
+        x1, y1 = positions[s]
+        x2, y2 = positions[t]
+        plt.plot([x1, x2], [y1, y2], color='black', zorder=1)
+        if w is not None:
+            plt.text((x1 + x2) / 2, (y1 + y2) / 2, str(w), fontsize=10, color='red', zorder=4)
+    
+    # Display the graph
+    plt.axis('off')
+    plt.show()
+    return
