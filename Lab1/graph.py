@@ -1,6 +1,7 @@
 from collections import deque
 import matplotlib.pyplot as plt
 
+
 def graph(source, target, weights=[], names={}):
     """
     Creates and display a graph.
@@ -71,54 +72,9 @@ def graph(source, target, weights=[], names={}):
     plt.show()
     return
 
-def bfs(source, target, start_node, target_node):
-    """
-    Breadth First Search (BFS).
-    
-    Args:
-        source (list): List of source nodes for edges.
-        target (list): List of target nodes for edges.
-        start_node (int): The starting node for BFS.
-        target_node (int): The node to be searched for.
-    
-    Returns:
-        list: A list representing the path of visited nodes, or -1 if target is not found.
-    """
-    # Initialize visited set, queue, and node_list
-    node_list = []
-    visited = set()
-    queue = deque()
-    
-    # Add starting node to visited set and queue
-    visited.add(start_node)
-    queue.append(start_node)
-    
-    while queue:
-        # Dequeue the first node
-        current_node = queue.popleft()
-        
-        # Add current node to the visited list
-        node_list.append(current_node)
-        
-        # If target node is found, return the node list
-        if current_node == target_node:
-            return node_list
-        
-        # Get all children of the current node
-        children = [target[i] for i in range(len(source)) if source[i] == current_node]
-        
-        # Add unvisited children to the queue
-        for child in children:
-            if child not in visited:
-                visited.add(child)
-                queue.append(child)
-    
-    # If target node is not found, return -1
-    print("Target not found!")
-    return -1
 
-source = [1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 5, 15, 15, 15]
-target = [3, 5, 4, 2, 6, 10, 7, 9, 8, 14, 11, 12, 13, 15, 17, 16, 18]
-node_list = bfs(source, target, 1, 15)
-print("Node List:", node_list)
-graph(source, target)
+source = [1, 1, 1, 2, 2, 2, 2, 8] # Source Nodes
+target = [3, 4, 2, 6, 5, 7, 8, 9] # Target Nodes
+weights = [200, 300, 900, 400, 0, 739, 100, 50] # Edge Weights
+names = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'Jacob', 8: 'H', 9: 'I'} #Node Names
+graph(source, target, weights, names)
