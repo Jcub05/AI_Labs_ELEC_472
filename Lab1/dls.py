@@ -71,9 +71,9 @@ target = [3, 5, 4, 2, 6, 10, 7, 9, 8, 14, 11, 12, 13, 15, 17, 16, 18]
 
 # Testing DLS at depth = 2
 node_list2, result = dls(source, target, 1, 15, 2)
-print("Node List 2 (DLS at depth=2):", node_list2)
+print("Node List 2 dls depth 2", node_list2)
 print("Result:", result)
 
 # Testing IDS
 node_list3 = ids(source, target, 1, 15)
-print("Node List 3 (IDS):", node_list3)
+print("Node List 3 ids", node_list3)
