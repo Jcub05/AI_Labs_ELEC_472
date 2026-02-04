@@ -156,12 +156,16 @@ def qlearning(maze, reward,
             # START OF YOUR CODE
 
             # 1. Find possible actions for the current state based on reward table
-            
+            possible_actions = np.where(reward[cs, :] != -np.inf)[0]
+
             # 2. Choose a random action as next state and store it to a variable `ns`
+            ns = np.random.choice(possible_actions)
 
             # 3. Find the maximum Q-value for the next state
+            max_qval = np.max(qtable[ns, :])
 
             # 4. Update Q-value using Bellman's equation
+            qtable[cs, ns] += alpha * (reward[cs, ns] + gamma * max_qval - qtable[cs, ns])
 
             # END OF YOUR CODE
             ##### 
@@ -258,21 +262,18 @@ def visualize_solution(pmat, maze):
 if __name__=='__main__':
     
     # Part 1: Generate 16x16 maze with 60 obstacles
-    n = 32
-    obst = 100
+    n=12
+    obst=30
     maze = create_maze(n, obst)
     visualize_maze(maze)
     
     # Uncomment below for Part 2 onwards (solving the maze)
-    # reward = create_reward(maze)
-    # qtable = qlearning(maze, reward, 
-    #          gamma = 0.99, 
-    #          max_iter = 1000,
-    #         alpha=0.1 )
-    # start = 0
-    # finish = n * n - 1
-    # pmat = solve_maze(qtable, start, finish)
-    # visualize_solution(pmat, maze)
-
-
-
+    reward = create_reward(maze)
+    qtable = qlearning(maze, reward, 
+             gamma = 0.99, 
+             max_iter = 1000,
+            alpha=0.1 )
+    start = 0
+    finish = n * n - 1
+    pmat = solve_maze(qtable, start, finish)
+    visualize_solution(pmat, maze)
