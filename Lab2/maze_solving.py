@@ -164,7 +164,7 @@ def qlearning(maze, reward,
             max_qval = np.max(qtable[ns, :])
 
             # 4. Update Q-value using Bellman's equation
-            qtable[cs, ns] += alpha * (reward[cs, ns] + gamma * max_qval - qtable[cs, ns])
+            qtable[cs, ns] += alpha * (reward[cs, ns] + gamma * qtable[ns, actual_next_action] - qtable[cs, ns])
 
             # END OF YOUR CODE
             ##### 
