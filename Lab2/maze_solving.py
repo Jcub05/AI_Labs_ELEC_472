@@ -105,8 +105,7 @@ def create_reward(maze):
     for i in range(finish+1):
         for j in range(finish+1):
             if j not in [
-                i - n, i + n, i - 1, i + 1,
-                i + n + 1, i + n - 1, i - n + 1, i - n - 1
+                i - n, i + n, i - 1, i + 1
             ]:
                 reward[i, j] = -np.inf
 
