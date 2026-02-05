@@ -160,10 +160,11 @@ def qlearning(maze, reward,
             # 2. Choose a random action as next state and store it to a variable `ns`
             ns = np.random.choice(possible_actions)
 
-            # 3. Find the maximum Q-value for the next state
-            max_qval = np.max(qtable[ns, :])
+            # 3. For Temporal Difference: find possible actions from next state and choose one
+            possible_next_actions = np.where(reward[ns, :] != -np.inf)[0]
+            actual_next_action = np.random.choice(possible_next_actions)
 
-            # 4. Update Q-value using Bellman's equation
+            # 4. Update Q-value using Temporal Difference equation
             qtable[cs, ns] += alpha * (reward[cs, ns] + gamma * qtable[ns, actual_next_action] - qtable[cs, ns])
 
             # END OF YOUR CODE
