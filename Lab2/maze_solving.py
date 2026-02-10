@@ -162,17 +162,12 @@ def qlearning(maze, reward,
             # 2. Choose a random action as next state and store it to a variable `ns`
             ns = np.random.choice(possible_actions)
 
-            # 3.Look at what action would be chosen from the next state  
-            next_possible_actions = np.where(reward[ns, :] != -np.inf)[0]
-            if len(next_possible_actions) > 0 and ns != finish:
-                # Max next action (optimal right now)
-                next_q = np.max(qtable[ns, next_possible_actions])
-            else:
-                next_q = 0  # No future value avail
-
+            # 3.Find maximum value from the for the next state   
+            max_q = np.max(qtable[ns, :])
             # 4. Update Q-value using Temporal Difference equation (before rearrangement)
-            qtable[cs, ns] = (1 - alpha) * qtable[cs, ns] + alpha * (reward[cs, ns] + gamma * next_q)
+            qtable[cs, ns] = qtable[cs, ns] + alpha * (reward[cs, ns] + gamma * max_q - qtable[cs, ns])
 
+            # OLD qtable[cs, ns] = (1 - alpha) * qtable[cs, ns] + alpha * (reward[cs, ns] + gamma * next_q)
             # END OF YOUR CODE
             ##### 
 
