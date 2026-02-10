@@ -137,12 +137,12 @@ if __name__=='__main__':
     plt.grid(True)
 
     # Parameters
-    max_iter = 1  # Maximum number of iterations
-    num_ants = 1  # Number of ants
+    max_iter = 500  # Maximum number of iterations
+    num_ants = 30  # Number of ants
     q = 1  # q constant
     alpha = 1  # Phromone coefficient
-    beta = 1  # Preference for shortest path
-    rho = 0.1  # Evaporation rate
+    beta = 5  # Preference for shortest path
+    rho = 0.3  # Evaporation rate
 
     final_tour, best_cost = ant_colony_optimization(x, y, q, max_iter, num_ants, alpha, beta, rho)
 
