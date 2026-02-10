@@ -71,7 +71,7 @@ def ant_colony_optimization(x, y, q, max_iter, num_ants, alpha, beta, rho):
                 ##### Implement your solution here  
                 # write the formula to calculate probability 
                 # START OF YOUR CODE
-                P = 
+                P = (tau[i, :] ** alpha) * (eta[i, :] ** beta)
                 # END OF YOUR CODE
 
                 # Sets the probability of visiting already-visited nodes to 0
@@ -100,7 +100,7 @@ def ant_colony_optimization(x, y, q, max_iter, num_ants, alpha, beta, rho):
                 ##### Implement your solution here  
                 # write the formula to update phromones
                 # START OF YOUR CODE
-                tau[i, j] =   
+                tau[i, j] = (1 - rho) * tau[i, j] + rho * (q / ants[k].cost)
                 # END OF YOUR CODE
         
         # Update best cost
