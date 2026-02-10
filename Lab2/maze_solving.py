@@ -111,10 +111,11 @@ def create_reward(maze):
 
     # Boundary Condition Handling
     for i in range(0, finish+1, n):
-        for j in range(0, i + n + 1):
-            if j in [i + n - 1, i - 1, i - n - 1]:
-                reward[i, j] = -np.inf
-                reward[j, i] = -np.inf
+        if i - 1 >= 0:
+            reward[i, i - 1] = -np.inf
+        right_cell = i + n - 1
+        if right_cell <= finish and right_cell + 1 <= finish:
+            reward[right_cell, right_cell + 1] = -np.inf
 
     return reward
 
@@ -142,6 +143,7 @@ def qlearning(maze, reward,
 
     # Q-learning parameters
     qtable = np.random.randn(*reward.shape)  # Initialize randomly
+    qtable[reward == -np.inf] = -np.inf  # Mask impossible moves
 
     # Find the optimal policy using the Bellman's equation
     for _ in range(max_iter):
@@ -205,13 +207,18 @@ def solve_maze(qtable, start, finish):
     path = [start]
 
     while move != finish:
-        move = np.argmax(qtable[start, :])
+        # Only consider valid (non -inf) moves
+        valid_mask = qtable[start, :] != -np.inf
+        valid_q = np.copy(qtable[start, :])
+        valid_q[~valid_mask] = -np.inf
 
-        # Prevent small loops
+        move = np.argmax(valid_q)
+
+        # Prevent small loops - only pick from valid adjacent moves
         if move in path:
-            sorted_indices = np.argsort(qtable[start, :])[::-1]
-            for idx in sorted_indices[1:]:
-                if idx not in path:
+            sorted_indices = np.argsort(valid_q)[::-1]
+            for idx in sorted_indices:
+                if idx not in path and valid_q[idx] != -np.inf:
                     move = idx
                     break
 
@@ -275,7 +282,7 @@ if __name__=='__main__':
     reward = create_reward(maze)
     qtable = qlearning(maze, reward, 
              gamma = 0.99, 
-             max_iter = 1000,
+             max_iter = 5000,
             alpha=0.1 )
     start = 0
     finish = n * n - 1
