@@ -167,7 +167,6 @@ def qlearning(maze, reward,
             # 4. Update Q-value using Temporal Difference equation (before rearrangement)
             qtable[cs, ns] = qtable[cs, ns] + alpha * (reward[cs, ns] + gamma * max_q - qtable[cs, ns])
 
-            # OLD qtable[cs, ns] = (1 - alpha) * qtable[cs, ns] + alpha * (reward[cs, ns] + gamma * next_q)
             # END OF YOUR CODE
             ##### 
 
