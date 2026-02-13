@@ -165,7 +165,7 @@ def qlearning(maze, reward,
             # 3.Find maximum value from the for the next state   
             max_q = np.max(qtable[ns, :])
             # 4. Update Q-value using Temporal Difference equation (before rearrangement)
-            qtable[cs, ns] = qtable[cs, ns] + alpha * (reward[cs, ns] + gamma * max_q - qtable[cs, ns])
+            qtable[cs, ns] = reward[cs, ns] + gamma * max_q
 
             # END OF YOUR CODE
             ##### 
