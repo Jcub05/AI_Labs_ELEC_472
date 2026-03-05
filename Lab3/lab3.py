@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 
 def main():
+
+    # Part 1,2
     # sampling frequency
     ecg_timeseries_full=[]
     with open('ecg.csv') as f:
@@ -20,12 +22,14 @@ def main():
     plt.show()
 
     # the time-series is too long, so we're going to take a small segment
-    x = ecg_timeseries_full[71740:81060]
+    x = np.array(ecg_timeseries_full[71740:81060])
     plt.figure()
     plt.plot(range(len(x)), x)
     plt.title('Cropped ECG signal')
     plt.show()
 
+
+    # Part 3
     freq1, pow1 = psd(x, sampling_freq)
     # Remember, x is the same data created earlier, covering samples 71,740 to 81,060
     plt.figure()
@@ -44,6 +48,26 @@ def main():
     plt.ylabel('Power')
     plt.grid()
     plt.show()
+
+    # Part 4
+    freq, pxx_welch = pwelch(x, fs=sampling_freq, window='hamming',)
+    plt.figure()
+    plt.plot(freq,pxx_welch)
+    plt.ylim([0, .007])
+    plt.title('Periodogram')
+    plt.xlabel('Frequency')
+    plt.ylabel('Power')
+    plt.grid()
+    plt.show()
+    
+    plt.figure()
+    plt.plot(freq,10*np.log10(pxx_welch))
+    plt.title('Periodogram Log scale')
+    plt.xlabel('Frequency')
+    plt.ylabel('Power')
+    plt.grid()
+    plt.show()
+
 
 def psd(input_signal, sampling_freq):
 
