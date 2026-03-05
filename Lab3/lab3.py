@@ -93,3 +93,6 @@ def pwelch(x, fs=1.0, window='hamming',
                    return_onesided=return_onesided, scaling=scaling, average=average)
 
     return f, Pxx
+
+if __name__ == "__main__":
+    main()

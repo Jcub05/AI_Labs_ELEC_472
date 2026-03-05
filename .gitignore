@@ -3,3 +3,7 @@
 # Ignore all Word files
 *.doc
 *.docx
+# Ignore all text files
+*.txt
+# Ignore all Excel files
+*.xls
