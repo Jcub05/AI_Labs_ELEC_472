@@ -1,8 +1,9 @@
 
 
 import numpy as np
-from scipy.signal import welch
+from scipy.signal import firwin, welch
 import matplotlib.pyplot as plt
+import scipy.signal as signal
 
 
 def main():
@@ -59,7 +60,7 @@ def main():
     plt.ylabel('Power')
     plt.grid()
     plt.show()
-    
+
     plt.figure()
     plt.plot(freq,10*np.log10(pxx_welch))
     plt.title('Periodogram Log scale')
@@ -67,6 +68,29 @@ def main():
     plt.ylabel('Power')
     plt.grid()
     plt.show()
+
+    # Part 7a
+    filter_coefficients_low = firwin(401, 5, window='hamming', pass_zero=True, scale=True, fs=sampling_freq)
+
+    plt.figure()
+    plt.plot(filter_coefficients_low)
+    plt.title('Low-pass FIR Filter Coefficients (Hamming)')
+    plt.xlabel('Tap')
+    plt.ylabel('Amplitude')
+    plt.grid()
+    plt.show()
+
+    # Part 7b
+    filter_coefficients_low = firwin(401, 5, window='hamming', pass_zero=False, scale=True, fs=sampling_freq)
+
+    plt.figure()
+    plt.plot(filter_coefficients_low)
+    plt.title('Low-pass FIR Filter Coefficients (Hamming)')
+    plt.xlabel('Tap')
+    plt.ylabel('Amplitude')
+    plt.grid()
+    plt.show()
+
 
 
 def psd(input_signal, sampling_freq):
