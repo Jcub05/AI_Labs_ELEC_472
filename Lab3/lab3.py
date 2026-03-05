@@ -26,6 +26,25 @@ def main():
     plt.title('Cropped ECG signal')
     plt.show()
 
+    freq1, pow1 = psd(x, sampling_freq)
+    # Remember, x is the same data created earlier, covering samples 71,740 to 81,060
+    plt.figure()
+    plt.plot(freq1,pow1)
+    plt.ylim([0, 0.005])
+    plt.title('Periodogram')
+    plt.xlabel('Frequency')
+    plt.ylabel('Power')
+    plt.grid()
+    plt.show()
+
+    plt.figure()
+    plt.plot(freq1,10*np.log10(pow1))
+    plt.title('Periodogram Log scale')
+    plt.xlabel('Frequency')
+    plt.ylabel('Power')
+    plt.grid()
+    plt.show()
+
 def psd(input_signal, sampling_freq):
 
     # calculating the DFT using the FFT algorithm
