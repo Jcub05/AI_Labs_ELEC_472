@@ -81,12 +81,22 @@ def main():
     plt.show()
 
     # Part 7b
-    filter_coefficients_low = firwin(401, 5, window='hamming', pass_zero=False, scale=True, fs=sampling_freq)
+    filter_coefficients_high = firwin(401, 5, window='hamming', pass_zero=False, scale=True, fs=sampling_freq)
 
     plt.figure()
-    plt.plot(filter_coefficients_low)
-    plt.title('Low-pass FIR Filter Coefficients (Hamming)')
+    plt.plot(filter_coefficients_high)
+    plt.title('High-pass FIR Filter Coefficients (Hamming)')
     plt.xlabel('Tap')
+    plt.ylabel('Amplitude')
+    plt.grid()
+    plt.show()
+
+    x_filtered = np.convolve(x, filter_coefficients_high, mode='same')
+
+    plt.figure()
+    plt.plot(x_filtered)
+    plt.title('Filtered ECG Signal (High-pass 5Hz)')
+    plt.xlabel('Samples')
     plt.ylabel('Amplitude')
     plt.grid()
     plt.show()
