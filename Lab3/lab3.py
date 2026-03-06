@@ -4,6 +4,7 @@ import numpy as np
 from scipy.signal import firwin, welch
 import matplotlib.pyplot as plt
 import scipy.signal as signal
+from scipy.signal import butter
 
 
 def main():
@@ -100,6 +101,21 @@ def main():
     plt.ylabel('Amplitude')
     plt.grid()
     plt.show()
+
+    freq_filtered, pxx_filtered = pwelch(x_filtered, fs=sampling_freq, window='hamming')
+
+    plt.figure()
+    plt.plot(freq_filtered, pxx_filtered)
+    plt.title('Welch PSD of Filtered Signal')
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Power')
+    plt.grid()
+    plt.show()
+
+    # Part 12
+    b, a = butter(7, 5, btype='high', analog=False, output='ba', fs=sampling_freq)
+    print("b coefficients:", b)
+    print("a coefficients:", a)
 
 
 
