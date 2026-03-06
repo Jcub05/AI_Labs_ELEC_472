@@ -4,7 +4,7 @@ import numpy as np
 from scipy.signal import firwin, welch
 import matplotlib.pyplot as plt
 import scipy.signal as signal
-from scipy.signal import butter
+from scipy.signal import butter, lfilter
 
 
 def main():
@@ -116,6 +116,20 @@ def main():
     b, a = butter(7, 5, btype='high', analog=False, output='ba', fs=sampling_freq)
     print("b coefficients:", b)
     print("a coefficients:", a)
+
+    # Part 13
+    filtered_signal = lfilter(b, a, x)
+    # Plot original and filtered signal
+    plt.figure(figsize=(8, 4))
+    t = np.linspace(0, 1, len(x), endpoint=False)
+    plt.plot(t, x, label="Original Signal", alpha=0.5)
+    plt.plot(t, filtered_signal, label="Filtered Signal", linewidth=2)
+    plt.legend()
+    plt.title("Butterworth Filter")
+    plt.xlabel("Time (s)")
+    plt.ylabel("Amplitude")
+    plt.grid()
+    plt.show()
 
 
 
