@@ -101,3 +101,9 @@ print(f'Variance explained by first 5 PCs: {np.sum(explained[:5]):.2%}')
 print(f'\nVariance explained by each PC:')
 for i in range(min(5, len(explained))):
     print(f'  PC{i+1}: {explained[i]:.2%}')
+
+# Min number of PCs to explain 98% var
+cumulative_explained = np.cumsum(explained)
+min_pcs_98 = np.argmax(cumulative_explained >= 0.98) + 1
+print(min_pcs_98)
+print(f'{cumulative_explained[min_pcs_98-1]:.4f}')

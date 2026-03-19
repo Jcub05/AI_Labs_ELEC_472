@@ -1,6 +1,7 @@
 
 import pandas as pd
 import numpy as np
+from scipy.stats import skew, entropy
 
 def extract_features(filename="raw_accelerometer_dataset.csv", 
                      segment_size = 250):
@@ -30,18 +31,31 @@ def extract_features(filename="raw_accelerometer_dataset.csv",
         
         # Calculate features per segment
         for g_id, group in class_data.groupby('group_id'):
-            data = group.iloc[:, :3]        
+            data = group.iloc[:, :3].values        
             feature_row = [
-                *np.max(data, axis=0) # max_x, max_y, max_z
-                # TODO: modify this to extract other features ...
+                # Maximum features
+                *np.max(data, axis=0),  
+                # Minimum features
+                *np.min(data, axis=0),  
+                # Mean features
+                *np.mean(data, axis=0),  
+                # Standard Deviation features
+                *np.std(data, axis=0),  
+                # Skewness features
+                *[skew(data[:, i]) for i in range(3)],  
+                # Entropy features
+                *[entropy(np.histogram(data[:, i], bins=10)[0] + 1e-10) for i in range(3)]  
             ]
             
             features.append(feature_row)
         
-        # Create feature DataFrame for current class
         columns = [
             'max_x', 'max_y', 'max_z',
-            # TODO: you also need to modify here accordingly
+            'min_x', 'min_y', 'min_z',
+            'mean_x', 'mean_y', 'mean_z',
+            'std_x', 'std_y', 'std_z',
+            'skew_x', 'skew_y', 'skew_z',
+            'entropy_x', 'entropy_y', 'entropy_z'
         ]
         
         class_features = pd.DataFrame(features, columns=columns)
@@ -51,12 +65,22 @@ def extract_features(filename="raw_accelerometer_dataset.csv",
 
     # Save results
     feature_set.to_csv(f'features_{segment_size}.csv', index=False)
+    print(f'Window size: {segment_size}')
+    print(f'Feature set shape: {feature_set.shape}')
+    print(f'Columns: {list(feature_set.columns)}')
     return feature_set
 
 
 
 if __name__=='__main__':
 
-    # TODO: please update the code to extract additional features.
-    extract_features(filename="raw_accelerometer_dataset.csv", 
-                     segment_size = 250)
+    # Extract features with window size 250
+    print('Extracting features with window size 250...')
+    features_250 = extract_features(filename="raw_accelerometer_dataset.csv", 
+                                    segment_size=250)
+    print()
+    
+    # Extract features with window size 500
+    print('Extracting features with window size 500...')
+    features_500 = extract_features(filename="raw_accelerometer_dataset.csv", 
+                                    segment_size=500)

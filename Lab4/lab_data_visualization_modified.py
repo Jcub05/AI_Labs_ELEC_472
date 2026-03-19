@@ -3,6 +3,8 @@
 
 
 import pandas as pd 
+import matplotlib
+matplotlib.use('Agg')  # Use non-interactive backend
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -18,21 +20,60 @@ if __name__=='__main__':
     classes = raw_data['Class'].unique()
     print(classes)
 
-    # Visualize the x-axis of the accelerometer data for all available classes
+    # Visualize the x-axis of the accelerometer data
     fig, axes = plt.subplots(len(classes), 1, figsize=(4, 2 * len(classes)))
     fig.suptitle('Accelerometer X-axis', fontsize=12)
 
     for i, task in enumerate(classes):
-        # Fetch rows belonging to a particular class
+        # Fetch rows particular class
         selected_task = raw_data[raw_data['Class'] == task]
         
-        # Select the axis (X=2, Y=3, Z=4)
-        signal = selected_task.iloc[:, 1].values  # Second column (X-axis)
+        # Select the axis
+        signal = selected_task.iloc[:, 1].values 
         
         # Plot a small segment
         axes[i].plot(signal[:5000])
         axes[i].set_ylabel(task, fontsize=12)
         
     axes[-1].set_xlabel('time', fontsize=12)
-    plt.savefig('figure.pdf')
-    plt.show()
+    plt.tight_layout()
+    plt.savefig('figure_X.pdf')
+    plt.close()
+
+    # Y axis same thing
+    fig, axes = plt.subplots(len(classes), 1, figsize=(4, 2 * len(classes)))
+    fig.suptitle('Accelerometer Y-axis', fontsize=12)
+
+    for i, task in enumerate(classes):
+
+        selected_task = raw_data[raw_data['Class'] == task]
+        
+
+        signal = selected_task.iloc[:, 2].values # Y- axis
+        
+
+        axes[i].plot(signal[:5000])
+        axes[i].set_ylabel(task, fontsize=12)
+        
+    axes[-1].set_xlabel('time', fontsize=12)
+    plt.tight_layout()
+    plt.savefig('figure_Y.pdf')
+    plt.close()
+
+    # Z axis same thing
+    fig, axes = plt.subplots(len(classes), 1, figsize=(4, 2 * len(classes)))
+    fig.suptitle('Accelerometer Z-axis', fontsize=12)
+
+    for i, task in enumerate(classes):
+        selected_task = raw_data[raw_data['Class'] == task]
+        
+
+        signal = selected_task.iloc[:, 3].values  # Z-axis
+        
+        axes[i].plot(signal[:5000])
+        axes[i].set_ylabel(task, fontsize=12)
+        
+    axes[-1].set_xlabel('time', fontsize=12)
+    plt.tight_layout()
+    plt.savefig('figure_Z.pdf')
+    plt.close()
