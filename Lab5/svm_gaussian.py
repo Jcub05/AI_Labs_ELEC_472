@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import random
 import time
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 random.seed(42)
 
 # Import the pre-extracted features
@@ -50,12 +53,12 @@ for fold in range(0, total_fold):
     y_test = dataset.iloc[test_indices]['activity']
     
     # TODO: build your model here
-
+    model = SVC(kernel='rbf', random_state=42)
 
     # Start timing the training block
     start_time=time.time()
     # TODO: train your model using x_train and y_train
-
+    model.fit(x_train, y_train)
     
     # end timing the training block and display elapsed time
     end_time = time.time()
@@ -72,21 +75,26 @@ for fold in range(0, total_fold):
     te_f1_score  = 0
     
     # TODO: calculate and display the training and testing accuracy for the fold
-
+    y_pred = model.predict(x_test)
+    y_pred_train = model.predict(x_train)
+    tr_acc = accuracy_score(y_train, y_pred_train)
+    te_acc = accuracy_score(y_test, y_pred)
 
     print(f'Classifier output fold {fold} - test acc: {te_acc*100:.2f}% - train acc: {tr_acc*100:.2f}%')
     
     # TODO: Calculate average precision, recall, and f1 score for the test set.
-
+    te_precision = precision_score(y_test, y_pred, average='weighted')
+    te_recall = recall_score(y_test, y_pred, average='weighted')
+    te_f1_score = f1_score(y_test, y_pred, average='weighted')
 
     print(f'Classifier output fold {fold} - test precision: {te_precision*100:.2f}% - test recall: {te_recall*100:.2f}% - test f1-score: {te_f1_score*100:.2f}%')
     
 
     # TODO: save results from each fold to calculate final results averaged over all folds in the end
-    # final_accuracy  =  # save te_acc
-    # final_precision =  # save te_precision
-    # final_recall    =  # save te_recall
-    # final_f1_score  =  # save te_f1_score
+    final_accuracy  += te_acc
+    final_precision += te_precision
+    final_recall    += te_recall
+    final_f1_score  += te_f1_score
     
     
 # Calculate final average performance after 10-fold cross validation
@@ -97,4 +105,3 @@ final_f1_score  /= total_fold
 
 # Final output of cross validation results
 print(f'\nClassifier final output Test: Accuracy:  {final_accuracy*100:.2f}% Precision: {final_precision*100:.2f}% Recall:    {final_recall*100:.2f}% F1-Score:  {final_f1_score*100:.2f}%')
-
