@@ -33,6 +33,7 @@ final_accuracy = 0
 final_precision = 0
 final_recall = 0
 final_f1_score = 0
+total_time = 0
 
 indices = np.arange(0, len(dataset))
 random.shuffle(indices)
@@ -95,6 +96,7 @@ for fold in range(0, total_fold):
     final_precision += te_precision
     final_recall    += te_recall
     final_f1_score  += te_f1_score
+    total_time += elapsed_time
     
     
 # Calculate final average performance after 10-fold cross validation
@@ -104,4 +106,4 @@ final_recall    /= total_fold
 final_f1_score  /= total_fold
 
 # Final output of cross validation results
-print(f'\nClassifier final output Test: Accuracy:  {final_accuracy*100:.2f}% Precision: {final_precision*100:.2f}% Recall:    {final_recall*100:.2f}% F1-Score:  {final_f1_score*100:.2f}%')
+print(f'\nClassifier final output Test: Accuracy:  {final_accuracy*100:.2f}% Precision: {final_precision*100:.2f}% Recall:    {final_recall*100:.2f}% F1-Score:  {final_f1_score*100:.2f}% Total Training Time: {total_time:.2f} seconds')

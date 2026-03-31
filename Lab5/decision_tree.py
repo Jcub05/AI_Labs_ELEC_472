@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import random
 import time
-from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 random.seed(42)
@@ -54,7 +54,7 @@ for fold in range(0, total_fold):
     y_test = dataset.iloc[test_indices]['activity']
     
     # TODO: build your model here
-    model = SVC(kernel='rbf', random_state=42)
+    model = DecisionTreeClassifier(max_leaf_nodes=8, min_samples_leaf=1, min_samples_split=10, random_state=42)
 
     # Start timing the training block
     start_time=time.time()
@@ -97,6 +97,7 @@ for fold in range(0, total_fold):
     final_recall    += te_recall
     final_f1_score  += te_f1_score
     total_time += elapsed_time
+    
     
 # Calculate final average performance after 10-fold cross validation
 final_accuracy  /= total_fold
