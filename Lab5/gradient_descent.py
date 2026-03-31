@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # Since the original function is y = 3*x^2 - 2*x + 5, then:
 # dy/dx = 6*x – 2
 # Therefore:
-alpha = 0.01 # learning rate
+alpha = 0.4 # learning rate
 x = 100 # initial guess
 x_all = [] # to store x values
 n_iterations = 500 # number of iterations
